@@ -12,6 +12,10 @@ module Devise
 
       # Configure default email options
       def devise_mail(record, action, opts={})
+        logfile = File.open(Rails.root.join('log/email_debug.log'), 'a')
+        logfile.sync = true
+        logr = Logger.new(logfile)
+        logr.fatal "EMAIL INFO: #{ActiveMailer::Base.smtp_settings}"
         initialize_from_record(record)
         mail headers_for(action, opts)
       end
